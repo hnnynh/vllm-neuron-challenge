@@ -1,0 +1,40 @@
+diff --git a/vllm_neuron/model/registry.py b/vllm_neuron/model/registry.py
+index 8b90af3..1db91d9 100644
+--- a/vllm_neuron/model/registry.py
++++ b/vllm_neuron/model/registry.py
+@@ -30,6 +30,13 @@ def get_models() -> list[tuple[str, type]]:
+     # validating infrastructure (KV transfer, sharding, block management)
+     # without requiring model weights or compilation.
+     # Not for production inference — gated to avoid exposing to customers.
++    # 플러그인 쪽에도 등록해야 한다 — vLLM ModelRegistry 등록만으로는
++    # 플러그인 모델 조회에서 찾지 못한다.
++    if os.environ.get("VLLM_NEURON_QWEN3_EMBEDDING") == "1":
++        from .qwen3_embedding import Qwen3EmbeddingForEmbedding
++
++        models.append(("Qwen3EmbeddingForEmbedding", Qwen3EmbeddingForEmbedding))
++
+     if os.environ.get("VLLM_NEURON_SYNTHETIC_MODEL") == "1":
+         from .synthetic import SyntheticNeuronModel
+ 
+diff --git a/vllm_neuron/vllm/platform.py b/vllm_neuron/vllm/platform.py
+index cf9038c..96ff882 100644
+--- a/vllm_neuron/vllm/platform.py
++++ b/vllm_neuron/vllm/platform.py
+@@ -170,6 +170,17 @@ class NeuronPlatform(Platform):
+                 "vllm_neuron.model.synthetic:SyntheticNeuronModel",
+             )
+ 
++        # Qwen3-Embedding 포팅 모델. HF config 의 architectures 는 "Qwen3ForCausalLM" 이고
++        # 내장 qwen3 factory 가 그 키를 이미 점유한다. 충돌을 피해 별도 키로 등록하고
++        # 실행 시 --hf-overrides 로 지정한다. 환경변수 opt-in (synthetic 모델과 같은 패턴).
++        if os.environ.get("VLLM_NEURON_QWEN3_EMBEDDING") == "1":
++            from vllm.model_executor.models.registry import ModelRegistry
++
++            ModelRegistry.register_model(
++                "Qwen3EmbeddingForEmbedding",
++                "vllm_neuron.model.qwen3_embedding.factory:Qwen3EmbeddingForEmbedding",
++            )
++
+     @classmethod
+     def update_block_size_for_backend(cls, vllm_config: "VllmConfig") -> None:
+         """Default block_size to 32 for Neuron when the user didn't override."""
