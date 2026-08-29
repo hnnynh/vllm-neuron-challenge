@@ -11,8 +11,8 @@
 - 정확도: 레시피 기준값과 동일
 - 처리량: 동시 요청 2~4에서 포화 (36.05 req/s)
 - 레포트
-  - [phase-1.ko.md](phase-1.ko.md)
-  - [phase-1.en.md](phase-1.en.md)
+  - [phase-1-onboarding.ko.md](phase-1-onboarding.ko.md)
+  - [phase-1-onboarding.en.md](phase-1-onboarding.en.md)
 
 ## Phase 2 — 커널 융합 (선택)
 
@@ -22,5 +22,6 @@
 - 조치: 융합 활성화
 - 결과: 포화 처리량 4~5% 상승 (37.18 req/s), 정확도 유지
 - 레포트
-  - [phase-2.ko.md](phase-2.ko.md)
-  - [phase-2.en.md](phase-2.en.md)
+  - [phase-2-kernel-fusion.ko.md](phase-2-kernel-fusion.ko.md)
+  - [phase-2-kernel-fusion.en.md](phase-2-kernel-fusion.en.md)
+ 
