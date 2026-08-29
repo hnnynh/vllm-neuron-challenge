@@ -1,6 +1,7 @@
 # Challenge — vLLM Neuron Model Onboarding Report
 
-> Phase 1: Getting Qwen3-Embedding-8B running on vLLM Neuron
+> Phase 1: "Swapping in" a model with NF functions 
+> Getting Qwen3-Embedding-8B running on vLLM Neuron
 
 The model gets assembled from the **NF functions** the plugin ships.
 
@@ -14,7 +15,7 @@ The model gets assembled from the **NF functions** the plugin ships.
 | TP | 4 |
 
 
-### The whole thing in 5 stages
+## The whole thing in 5 stages
 
 ```
 ┌───────────────────────────────────────────────────────────────────────────────┐
@@ -24,7 +25,7 @@ The model gets assembled from the **NF functions** the plugin ships.
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Mini glossary
+## Mini glossary
 
 | Term | What it means |
 |---|---|
@@ -38,7 +39,7 @@ The model gets assembled from the **NF functions** the plugin ships.
 | **pooling** | Collapsing per-token vectors into one sentence vector. This model uses the last token |
 | **compile / NEFF** | Neuron compiles the graph ahead of execution. NEFF is what comes out |
 
-### Environment
+## Environment
 
 | Item | State |
 |---|---|
@@ -48,7 +49,7 @@ The model gets assembled from the **NF functions** the plugin ships.
 | NeuronCore | Idle ✓ |
 
 
-### Setting up the DLC
+## Setting up the DLC
 
 The DLC arrives with the plugin installed non-editable. To add a model you mount your source over it.
 
